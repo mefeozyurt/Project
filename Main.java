@@ -12,8 +12,54 @@ public class Main {
     
 
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
-    public static void loadData() {
+    static int[][][] profitData = new int[MONTHS][DAYS][COMMS];
+
+    private static int getCommodityIndex(String commodity) {
+        for (int i = 0; i < commodities.length; i++) {
+            if (commodity.equals(commodities[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
+
+
+    public static void loadData() {
+        for (int month = 0; month < MONTHS; month++) {
+            String FileName = "Data_Files/" + months[month] + ".txt";
+            File file = new File(FileName);
+
+            try {
+                Scanner sc = new Scanner(file);
+
+                if (sc.hasNextLine()) {
+                    sc.nextLine();
+                }
+                while (sc.hasNextLine()) {
+                    String line = sc.nextLine();
+                    String[] parts = line.split(",");
+
+                    if (parts.length >= 3) {
+                        int day = Integer.parseInt(parts[0].trim());
+                        String commodityName = parts[1].trim();
+                        int profit = Integer.parseInt(parts[2].trim());
+
+                        int commodityIndex = getCommodityIndex(commodityName);
+
+                        if (commodityIndex != -1 && day >= -1 && day <= DAYS) {
+
+                            profitData[month][day - 1][commodityIndex] = profit;
+                        }
+                    }
+                }
+                sc.close();
+            } catch (FileNotFoundException e) {
+            } catch (NumberFormatException e) {
+
+            }
+        }
+    }
+
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
