@@ -98,11 +98,37 @@ public class Main {
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+        int commodityIndex = getCommodityIndex(commodity);
+        if (commodityIndex == -1 || from < 1 || to > DAYS || from > to) {
+            return -99999;
+        }
+        int totalProfit = 0;
+        for (int month = 0; month < MONTHS; month++) {
+            for (int day = from - 1; day < to; day++) {
+                totalProfit += profitData[month][day][commodityIndex];
+            }
+        }
+        return totalProfit;
     }
 
     public static int bestDayOfMonth(int month) { 
-        return 1234; 
+        if (month < 0 || month >= MONTHS) {
+            return -1;
+        }
+
+        long maxDailyProfit = Long.MIN_VALUE;
+        int bestDay = -1;
+        for (int day = 0; day < DAYS; day++) {
+            long dailyTotal = 0;
+            for (int commodity = 0; commodity < COMMS; commodity++) {
+                dailyTotal += profitData[month][day][commodity];
+            }
+            if (dailyTotal > maxDailyProfit) {
+                maxDailyProfit = dailyTotal;
+                bestDay = day + 1;
+            }
+        }
+        return bestDay;
     }
     
     public static String bestMonthForCommodity(String comm) { 
