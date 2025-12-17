@@ -64,11 +64,37 @@ public class Main {
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
     public static String mostProfitableCommodityInMonth(int month) {
-        return "DUMMY"; 
-    }
+        if (month < 0 || month >= MONTHS) {
+            return "Invalid month!";
+        }
+
+        long maxProfit = Long.MIN_VALUE;
+        int bestCommodityIndex = -1;
+
+        for (int commodityIndex = 0; commodityIndex < COMMS; commodityIndex++) {
+            long currentProfit = 0;
+            for (int day = 0; day < DAYS; day++) {
+                currentProfit += profitData[month][day][commodityIndex];
+            }
+            if (currentProfit > maxProfit) {
+                maxProfit = currentProfit;
+                bestCommodityIndex = commodityIndex;
+            }
+        }
+        if (bestCommodityIndex == -1) return "Invalid month!";
+
+            return commodities[bestCommodityIndex] + maxProfit;
+        }
 
     public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+        if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) {
+            return -99999;
+        }
+        int totalProfit = 0;
+        for (int commodityIndex = 0; commodityIndex < COMMS; commodityIndex++) {
+            totalProfit += profitData[month][day-1][commodityIndex];
+        }
+        return totalProfit;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
