@@ -46,7 +46,7 @@ public class Main {
 
                         int commodityIndex = getCommodityIndex(commodityName);
 
-                        if (commodityIndex != -1 && day >= -1 && day <= DAYS) {
+                        if (commodityIndex != -1 && day >= 1 && day <= DAYS) {
 
                             profitData[month][day - 1][commodityIndex] = profit;
                         }
@@ -85,7 +85,7 @@ public class Main {
             return "INVALID_MONTH";
         }
 
-            return commodities[bestCommodityIndex] + maxProfit;
+            return commodities[bestCommodityIndex] + " " + maxProfit;
         }
 
     public static int totalProfitOnDay(int month, int day) {
@@ -188,11 +188,44 @@ public class Main {
     }
     
     public static int daysAboveThreshold(String comm, int threshold) { 
-        return 1234; 
+        int commodityIndex = getCommodityIndex(comm);
+        if (commodityIndex == -1) {
+            return -1;
+        }
+
+        int count = 0;
+        for (int month = 0; month < MONTHS; month++) {
+            for (int day = 0; day < DAYS; day++) {
+                if (profitData[month][day][commodityIndex] > threshold) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
-    public static int biggestDailySwing(int month) { 
-        return 1234; 
+    public static int biggestDailySwing(int month) {
+        if (month < 0 || month >= MONTHS) {
+            return -99999;
+        }
+
+        int maxSwing = 0;
+
+        for (int day = 0; day < DAYS - 1; day++) {
+            long totalDay1 = 0;
+            long totalDay2 = 0;
+
+            for (int commodity = 0; commodity < COMMS; commodity++) {
+                totalDay1 += profitData[month][day][commodity];
+                totalDay2 += profitData[month][day + 1][commodity];
+            }
+
+            int swing = (int) Math.abs(totalDay2 - totalDay1);
+            if (swing > maxSwing) {
+                maxSwing = swing;
+            }
+        }
+        return maxSwing;
     }
     
     public static String compareTwoCommodities(String c1, String c2) { 
