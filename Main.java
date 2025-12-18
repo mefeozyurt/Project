@@ -65,7 +65,7 @@ public class Main {
 
     public static String mostProfitableCommodityInMonth(int month) {
         if (month < 0 || month >= MONTHS) {
-            return "Invalid month!";
+            return "INVALID_MONTH";
         }
 
         long maxProfit = Long.MIN_VALUE;
@@ -81,7 +81,9 @@ public class Main {
                 bestCommodityIndex = commodityIndex;
             }
         }
-        if (bestCommodityIndex == -1) return "Invalid month!";
+        if (bestCommodityIndex == -1) {
+            return "INVALID_MONTH";
+        }
 
             return commodities[bestCommodityIndex] + maxProfit;
         }
