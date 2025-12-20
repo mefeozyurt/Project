@@ -229,11 +229,57 @@ public class Main {
     }
     
     public static String compareTwoCommodities(String c1, String c2) { 
-        return "DUMMY is better by 1234"; 
+        int index1 = getCommodityIndex(c1);
+        int index2 = getCommodityIndex(c2);
+
+        if (index1 == -1 || index2 == -1) {
+            return "INVALID_COMMODITY";
+        }
+
+        long totalProfit1 = 0;
+        long totalProfit2 = 0;
+
+        for (int month = 0; month < MONTHS; month++) {
+            for (int day = 0; day < DAYS; day++) {
+                totalProfit1 += profitData[month][day][index1];
+                totalProfit2 += profitData[month][day][index2];
+            }
+        }
+        if (totalProfit1 > totalProfit2) {
+            return c1 + " is better by " + (totalProfit1 - totalProfit2);
+        } else if (totalProfit1 < totalProfit2) {
+            return c2 + " is better by " + (totalProfit2 - totalProfit1);
+        } else  {
+            return "Equal";
+        }
     }
     
     public static String bestWeekOfMonth(int month) { 
-        return "DUMMY"; 
+        if (month < 0 || month >= MONTHS) {
+            return "INVALID_MONTH";
+        }
+
+        long maxWeekProfit = Long.MIN_VALUE;
+        int bestWeekProfit = -1;
+
+        for (int week = 0; week < 4; week++) {
+            long currentWeekProfit = 0;
+            int startDay = week * 7;
+
+            for (int i = 0;i < 7;i++) {
+                int dayIndex = startDay + i;
+
+                for (int commodity = 0; commodity < COMMS; commodity++) {
+                    currentWeekProfit += profitData[month][dayIndex][commodity];
+                }
+            }
+
+            if (currentWeekProfit > maxWeekProfit) {
+                maxWeekProfit = currentWeekProfit;
+                bestWeekProfit = week + 1;
+            }
+        }
+        return "Week " + bestWeekProfit;
     }
 
     public static void main(String[] args) {
